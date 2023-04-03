@@ -29,10 +29,11 @@ namespace AddressBookDay27
             Console.Write("Enter PinCode: ");
             contact.pinCode = Convert.ToInt64(Console.ReadLine());
             addressBook.Add(contact.firstName, contact);
+            Console.WriteLine("Addition Completed\n");
         }
-        public void Display()
+        public void DisplayAllContact()
         {
-            foreach (var item in addressBook)
+            foreach (KeyValuePair<string, Contact> item in addressBook)
             {
                 Console.WriteLine("First Name: " + item.Value.firstName);
                 Console.WriteLine("Last Name: " + item.Value.lastName);
@@ -41,14 +42,33 @@ namespace AddressBookDay27
                 Console.WriteLine("State : " + item.Value.state);
                 Console.WriteLine("Email Id: " + item.Value.emailId);
                 Console.WriteLine("Phone Number: " + item.Value.phoneNumber);
-                Console.WriteLine("Pin Code: " + item.Value.pinCode);
+                Console.WriteLine("Pin Code: " + item.Value.pinCode + "\n\n");
+            }
+        }
+        public void DisplayAContact()
+        {
+            Console.Write("Enter first Name of contact person :");
+            string name = Console.ReadLine();
+            foreach (KeyValuePair<string, Contact> item in addressBook)
+            {
+                if (item.Key.Equals(name))
+                {
+                    Console.WriteLine("First Name: " + item.Value.firstName);
+                    Console.WriteLine("Last Name: " + item.Value.lastName);
+                    Console.WriteLine("Address: " + item.Value.address);
+                    Console.WriteLine("City : " + item.Value.city);
+                    Console.WriteLine("State : " + item.Value.state);
+                    Console.WriteLine("Email Id: " + item.Value.emailId);
+                    Console.WriteLine("Phone Number: " + item.Value.phoneNumber);
+                    Console.WriteLine("Pin Code: " + item.Value.pinCode + "\n\n");
+                }
             }
         }
         public void EditContact()
         {
-            Console.WriteLine("Enter first name to edit ");
+            Console.WriteLine("Enter first name of contact to edit ");
             string firstName = Console.ReadLine();
-            foreach (var item in addressBook)
+            foreach (KeyValuePair<string, Contact> item in addressBook)
             {
                 if (firstName == item.Key)
                 {
@@ -93,6 +113,7 @@ namespace AddressBookDay27
                             Console.WriteLine("Your enter wrong chice!");
                             break;
                     }
+                    Console.WriteLine("Sucessfully Edited\n\n");
                 }
                 else
                 {
@@ -100,7 +121,19 @@ namespace AddressBookDay27
                 }
             }
         }
+        public void DeleteContact()
+        {
+            Console.WriteLine("Enter the person's first Name to be delete");
+            string nameToDelete = Console.ReadLine();
+            if (addressBook.ContainsKey(nameToDelete))
+            {
+                addressBook.Remove(nameToDelete);
+                Console.WriteLine("Deletion Completed\n\n");
+            }
+            else
+            {
+                Console.WriteLine("Contact with name " + nameToDelete + " is not found!\n\n");
+            }
+        }
     }
 }
-
-
