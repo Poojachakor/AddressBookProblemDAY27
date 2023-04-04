@@ -9,6 +9,7 @@ namespace AddressBookDay27
     class AddressBookManagement
     {
         Dictionary<string, Contact> addressBook = new Dictionary<string, Contact>();
+        Dictionary<string, AddressBookManagement> addressBookDictionary = new Dictionary<string, AddressBookManagement>();
         public void ToAddAddress()
         {
             Contact contact = new Contact();
@@ -134,6 +135,16 @@ namespace AddressBookDay27
             {
                 Console.WriteLine("Contact with name " + nameToDelete + " is not found!\n\n");
             }
+        }
+        public void AddAddressBook(string bookName)
+        {
+            AddressBookManagement addressBook = new AddressBookManagement();
+            addressBookDictionary.Add(bookName, addressBook);
+            Console.WriteLine("AddressBook Created.");
+        }
+        public Dictionary<string, AddressBookManagement> GetAddressBook()
+        {
+            return addressBookDictionary;
         }
     }
 }
