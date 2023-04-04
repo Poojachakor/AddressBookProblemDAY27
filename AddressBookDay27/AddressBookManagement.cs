@@ -10,6 +10,8 @@ namespace AddressBookDay27
     {
         Dictionary<string, Contact> addressBook = new Dictionary<string, Contact>();
         Dictionary<string, AddressBookManagement> addressBookDictionary = new Dictionary<string, AddressBookManagement>();
+        Dictionary<Contact, string> cityDictionary = new Dictionary<Contact, string>();
+        Dictionary<Contact, string> stateDictionary = new Dictionary<Contact, string>();
         public void AddContact(string firstName, string lastName, string address, string city, string state, string email, long phoneNumber, long pincode, string bookName)
         {
             Contact contact = new Contact();
@@ -132,7 +134,7 @@ namespace AddressBookDay27
         {
             return addressBookDictionary;
         }
-        public List<Contact> GetListOfDictctionaryKeys(string bookName)
+        public List<Contact> GetListOfDictctionaryValues(string bookName)
         {
             List<Contact> book = new List<Contact>();
             foreach (var value in addressBookDictionary[bookName].addressBook.Values)
@@ -141,9 +143,19 @@ namespace AddressBookDay27
             }
             return book;
         }
+
+        public List<Contact> GetListOfDictctionaryKeys(Dictionary<Contact, string> d)
+        {
+            List<Contact> book = new List<Contact>();
+            foreach (var value in d.Keys)
+            {
+                book.Add(value);
+            }
+            return book;
+        }
         public bool CheckDuplicateEntry(Contact c, string bookName)
         {
-            List<Contact> book = GetListOfDictctionaryKeys(bookName);
+            List<Contact> book = GetListOfDictctionaryValues(bookName);
             if (book.Any(b => b.Equals(c)))
             {
                 Console.WriteLine("Name already Exists.");
@@ -151,20 +163,12 @@ namespace AddressBookDay27
             }
             return false;
         }
-        public List<Contact> GetListOfDictctionaryKeys2(Dictionary<string, Contact> d)
-        {
-            List<Contact> book = new List<Contact>();
-            foreach (var value in d.Values)
-            {
-                book.Add(value);
-            }
-            return book;
-        }
         public void SearchPersonByCity(string city)
         {
             foreach (AddressBookManagement addressbookobj in addressBookDictionary.Values)
             {
-                List<Contact> contactList = GetListOfDictctionaryKeys2(addressbookobj.addressBook);
+                CreateCityDictionary();
+                List<Contact> contactList = GetListOfDictctionaryKeys(addressbookobj.cityDictionary);
                 foreach (Contact contact in contactList.FindAll(c => c.city.Equals(city)).ToList())
                 {
                     Console.WriteLine(contact.ToString());
@@ -175,10 +179,31 @@ namespace AddressBookDay27
         {
             foreach (AddressBookManagement addressbookobj in addressBookDictionary.Values)
             {
-                List<Contact> contactList = GetListOfDictctionaryKeys2(addressbookobj.addressBook);
+                CreateStateDictionary();
+                List<Contact> contactList = GetListOfDictctionaryKeys(addressbookobj.stateDictionary);
                 foreach (Contact contact in contactList.FindAll(c => c.state.Equals(state)).ToList())
                 {
                     Console.WriteLine(contact.ToString());
+                }
+            }
+        }
+        public void CreateCityDictionary()
+        {
+            foreach (AddressBookManagement addressBookObj in addressBookDictionary.Values)
+            {
+                foreach (Contact contact in addressBookObj.addressBook.Values)
+                {
+                    addressBookObj.cityDictionary.Add(contact, contact.city);
+                }
+            }
+        }
+        public void CreateStateDictionary()
+        {
+            foreach (AddressBookManagement addressBookObj in addressBookDictionary.Values)
+            {
+                foreach (Contact contact in addressBookObj.addressBook.Values)
+                {
+                    addressBookObj.stateDictionary.Add(contact, contact.state);
                 }
             }
         }
